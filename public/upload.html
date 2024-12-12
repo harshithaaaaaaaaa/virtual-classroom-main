@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPLOAD</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <section id="header">
+        <a class="start-logo" href="http://localhost:3000"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="./teacher.html">Create class</li></a>
+                <li><a href="./disscussionT.html">Disscussion form</li></a>
+                <li><a href="./enrollment.html">Student List</li></a>
+                <li><a href="./material.html">Upload material</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div> 
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu"></i>
+        </div>
+    </section>
+
+    <section id="st-enroll">
+        <center><h1 id="courseTitle"></h1></center> 
+        <div class="inforrr-container">
+            <div class="imgg">
+                <img src="../assets/c1.jpg" alt="" type="img">
+            </div>
+            <div class="inforrr">
+                <p id="courseDesc"></p>
+                <p id="courseCode"></p>
+            </div>
+        </div><br><br>
+
+        <div class="upload-file" style="display: flex; justify-content: space-around; color: #4F4440;">
+            <form id="uploadForm" enctype="multipart/form-data" action="/upload" method="post">
+                <!-- <input type="file" name="file" id="fileUpload" accept=".pdf,.doc,.docx,.jpg,.png" class="enroll" style="margin-right: 50px;"> -->
+                <a href="./material.html"><button type="button" id="uploadButton" class="enroll" style="margin-right: 50px;">Upload Files</button></a>
+                <a href="https://meet.google.com/" style="text-decoration: none; ">
+                    <button id="zoomButton" class="enroll">Create GOOGLE MEET</button>
+                </a>
+            </form>
+        </div>
+        <br><br>
+    </section>
+
+    <script>
+         document.addEventListener("DOMContentLoaded", function() {
+        // Retrieve form data from localStorage
+        var cid = localStorage.getItem("cid");
+        var title = localStorage.getItem("title");
+        var descr = localStorage.getItem("descr");
+        
+        // Populate the elements with form data
+        document.getElementById("courseTitle").innerText = title;
+        document.getElementById("courseDesc").innerText = "Desc: " + descr;
+        document.getElementById("courseCode").innerText = "Code: " + cid;
+
+        // Clear localStorage after retrieving data
+        localStorage.clear();
+    });
+
+        // Handling file upload
+        document.getElementById("uploadButton").addEventListener("click", function() {
+            var formData = new FormData(document.getElementById("uploadForm"));
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/upload", true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    alert("File uploaded successfully.");
+                } else {
+                    alert("Error uploading file. Please try again.");
+                }
+            };
+            xhr.send(formData);
+        });
+
+        function checkUpload() {
+            var fileInput = document.getElementById('fileUpload');
+            var uploadButton = document.getElementById('uploadButton');
+
+            if (fileInput.files.length > 0) {
+                // File is selected
+                alert("File uploaded ✅");
+            } else {
+                // No file selected
+                alert("No file selected");
+            }
+        }
+
+    </script>
+
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="./navigation.js"></script>
+    <script src="teacher.js"></script>
+</body>
+</html>

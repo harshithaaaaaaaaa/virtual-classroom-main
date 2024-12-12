@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE CLASS</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <!-- Add your content for creating a class here -->
+
+    <section id="header">
+        <a class="start-logo" href="./index.html"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="./teacher.html">Create class</li></a>
+                <li><a href="./disscussionT.html">Disscussion form</li></a>
+                <li><a href="./enrollment.html">Student List</li></a>
+                <li><a href="./material.html">Upload material</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu" ></i>
+        </div>
+
+    </section>
+
+    <div class="ia">
+    
+        <form id="ia1" method="post" class="todo" action="./upload.html" target="_blank">
+
+            <p>CREATE CLASS</p><br>
+
+            <div class="row">
+                <label for="user">COURSE-ID:</label><br>
+                <input type="text" name="cid" id="cid" required> <br><br>
+
+                <label for="user">TITLE:</label><br>
+                <input type="text" name="title" id="title" required> <br><br>
+
+                <label for="user">DESCRIPTION:</label><br>
+                <input type="text" name="descr" id="descr" required class="desc-box"> <br><br>
+
+                <label for="user">STAFF-ID:</label><br>
+                <input type="text" name="instr_id" id="instr_id" required> <br><br>
+            </div>
+            
+            <input type="submit" value="submit" id="submit">
+        </form>
+    </div>   
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("ia1").addEventListener("submit", async function(event) {
+        event.preventDefault(); // Prevent default form submission
+        // Get form values
+        var cid = document.getElementById("cid").value;
+        var title = document.getElementById("title").value;
+        var descr = document.getElementById("descr").value;
+        var instr_id = document.getElementById("instr_id").value;
+
+        const formData = {
+            cid: cid,
+            title: title,
+            descr: descr,
+            instr_id: instr_id
+        };
+
+        localStorage.setItem("cid", cid);
+        localStorage.setItem("title", title);
+        localStorage.setItem("descr", descr);
+        localStorage.setItem("instr_id", instr_id);
+
+        try {
+            const response = await fetch('http://localhost:8080/submit_form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (response.ok) {
+                console.log('Form submitted successfully');
+                alert('Form submitted successfully and class is created');
+                // Redirect to upload.html
+                window.location.href = "./upload.html";
+            } else {
+                console.error('Error submitting form');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Error submitting form: ' + error.message);
+        }
+    });
+});
+
+    </script>
+    
+    <script src="./server.js"></script>
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="./navigation.js"></script>
+    <script src="./index.js"></script>
+    <script src="./teacher.js"></script>
+</body>
+</html>

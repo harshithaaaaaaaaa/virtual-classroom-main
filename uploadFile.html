@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE CLASS</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        button,input[type=file]{
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #DAD6D2;
+            width: 300px;
+            letter-spacing: 5px;
+            /* margin-top: 25px; */
+            border: none;
+            box-shadow: 25px 25px 75px rgba(0,0,0,0.25);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .2s;
+        }
+
+        button:hover{
+            background-color:#ACA29A;
+            transform: scale(1.05);
+        }
+
+        .logo{
+            border-radius: 50%;
+        }
+                
+        .ia{
+            height: auto;
+            flex-direction: column;
+        }
+
+
+        .ia h1{
+            margin-top: 50px;
+            color: #4F4440;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Add your content for creating a class here -->
+
+    <section id="header">
+        <a class="start-logo" href="./index.html"><img src="https://campushunt.in/collegelogo/JSS%20logo.jpg" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="">Discussion form</li></a>
+                <li><a href="./enrollment.html">Enrollment list</li></a>
+                <li><a href="./public/teacher.html">Create course</a></li>
+                <li><a href="./public/material.html">Upload Files</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu" ></i>
+        </div>
+
+    </section>
+
+    <div class="ia">
+    
+        <form id="ia1" method="post" class="todo" action="/upload" enctype="multipart/form-data" >
+
+            <p>UPLOAD MATERIALS</p><br>
+
+            <div class="row">
+
+                <input type="file" name="fileUpload" id="fileUpload"><br><br>
+                <button type="submit">Upload</button>
+            </div>
+           
+        </form>
+
+        <h1>The Uploaded Files are:</h1>
+
+        <div id="fileList">
+            <!-- File links will be dynamically added here -->
+        </div>
+
+    </div>   
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            document.getElementById("ia1").addEventListener("submit", async function(event) {
+                event.preventDefault(); // Prevent default form submission
+                
+                const formData = new FormData();
+                formData.append('fileUpload', document.getElementById('fileUpload').files[0]);
+        
+                try {
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (response.ok) {
+                        console.log('Form submitted successfully');
+                        alert('File uploaded');
+                        // Fetch and display updated file list
+                        const fileListResponse = await fetch('/listFiles');
+                        if (fileListResponse.ok) {
+                            const fileList = await fileListResponse.json();
+                            const fileListContainer = document.getElementById('fileList');
+                            fileListContainer.innerHTML = '';
+                            fileList.forEach(fileName => {
+                                const fileLink = document.createElement('a');
+                                fileLink.href = `/uploads/${fileName}`;
+                                fileLink.textContent = fileName;
+                                fileListContainer.appendChild(fileLink);
+                                fileListContainer.appendChild(document.createElement('br'));
+                            });
+                        } else {
+                            console.error('Error fetching file list');
+                        }
+                    } else {
+                        console.error('Error submitting form');
+                    }
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    alert('Error submitting form: ' + error.message);
+                }
+            });
+
+            // Fetch and display file list on page load
+            const fileListResponse = await fetch('/listFiles');
+            if (fileListResponse.ok) {
+                const fileList = await fileListResponse.json();
+                const fileListContainer = document.getElementById('fileList');
+                fileListContainer.innerHTML = '';
+                fileList.forEach(fileName => {
+                    const fileLink = document.createElement('a');
+                    fileLink.href = `/uploads/${fileName}`;
+                    fileLink.textContent = fileName;
+                    fileListContainer.appendChild(fileLink);
+                    fileListContainer.appendChild(document.createElement('br'));
+                });
+            } else {
+                console.error('Error fetching file list');
+            }
+        });
+    </script>
+     
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="./navigation.js"></script>
+   
+</body>
+</html>

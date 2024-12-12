@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENROLLED LIST</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #4F4440;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #ACA29A;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="header">
+        <a class="start-logo" href="../index.html"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="../index.html">Home page</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu" ></i>
+        </div>
+
+    </section>
+
+    <div style="width: 90%; margin-left: 5%; margin-top: 70px;">
+        <h2 style="letter-spacing: 3px; font-size: 30px; color: #4F4440;">ENROLLED CANDIDATES</h2><br>
+    <table style="width: 90%; margin-left: 5%; color: #4F4440;">
+        <thead>
+            <tr>
+                <th>ENROLLMENT-ID</th>
+                <th>USN</th>
+                <th>ENROLLED COURSE</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentData">
+        <!-- Student data will be dynamically inserted here -->
+        </tbody>
+    </table>
+    </div>
+    
+
+    <script>
+        async function fetchStudentData() {
+        try {
+        const response = await fetch('http://localhost:3101/student_data');
+        if (!response.ok) {
+        throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        displayStudentData(data);
+        } catch (error) {
+        console.error('Error fetching student data:', error);
+        }
+        }
+        function displayStudentData(data) {
+        const studentDataElement =
+       document.getElementById('studentData');
+        studentDataElement.innerHTML = '';
+        data.forEach(student => {
+        const row = document.createElement('tr');
+        Object.values(student).forEach(value => {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        row.appendChild(cell);
+        });
+        studentDataElement.appendChild(row);
+        });
+        }
+        fetchStudentData();
+        </script>
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="./navigation.js"></script>
+</body>
+</html>

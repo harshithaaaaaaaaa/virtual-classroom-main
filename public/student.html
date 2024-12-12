@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <section id="header">
+        <a class="start-logo" href="../index.html"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="./enrolled-class.html">Enrolled classes</a></li>
+                <li><a href="./student.html">courses List</a></li>
+                <li><a href="./disscussion.html">Disscussion form</a></li>
+                <li><a href="./enrollment.html">Enrollment list</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu"></i>
+        </div>
+
+    </section>
+
+    <section id="individual">
+        <h1>Course List:</h1>
+        <div id="indi-pics">
+
+                <div class="img-box">
+                    <img src="../assets/c1.jpg" alt="">
+                    <p>TITLE: ATC</p>
+                    <p>Desc: Finite Automata and Compiler Designs</p>
+                    <p>Code: 21CS51</p>
+                    <button class="enroll" style="width: 70%;" onclick="enrollClass('ATC','Finite Automata and Compiler Designs', '21CS51')">ENROLL</button>
+                </div>
+            
+
+            <div class="img-box">
+                <img src="../assets/c2.jpg" alt="">
+                <p>TITLE: DBMS</p>
+                <p>Desc: Database Management System</p>
+                <p>Code: 21CS52</p>
+                <button class="enroll" style="width: 70%;" onclick="enrollClass('DBMS','Database Management System', '21CS52')">ENROLL</button>
+            </div>
+
+            <div class="img-box">
+                <img src="../assets/c3.jpg" alt="">
+                <p>TITLE: CN</p>
+                <p>Desc: Computer Networks</p>
+                <p>Code: 21CS53</p>
+                <button class="enroll" style="width: 70%;" onclick="enrollClass('CN','Computer Networks', '21CS53')">ENROLL</button>
+            </div> 
+            
+            <div class="img-box">
+                <img src="../assets/c4.jpg" alt="">
+                <p>TITLE: AIML</p>
+                <p>Desc: Artificial Intelligence and Machine Learning</p>
+                <p>Code: 21CS54</p>
+                <button class="enroll" style="width: 70%;" onclick="enrollClass('AIML', 'Artificial Intelligence and Machine Learning','21CS54')">ENROLL</button>
+            </div>
+
+            <div class="img-box">
+                <img src="../assets/c5.jpg" alt="">
+                <p>TITLE: RM</p>
+                <p>Desc: Research Methodology</p>
+                <p>Code: 21CS55</p>
+                <button class="enroll" style="width: 70%;" onclick="enrollClass('RM','Research Methodology', '21CS55')">ENROLL</button>
+            </div>
+            
+        </div>
+    </section>
+
+    <script>
+        function enrollClass(title, desc, code) {
+            alert("Class enrolled ✅");
+            const enrolledClasses = JSON.parse(localStorage.getItem("enrolledClasses")) || [];
+            enrolledClasses.push({ title, desc, code });
+            localStorage.setItem("enrolledClasses", JSON.stringify(enrolledClasses));
+        }
+    </script>
+    
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="../public/navigation.js"></script>
+</body>
+</html>

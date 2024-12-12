@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <section id="header">
+        <a class="start-logo" href="../index.html"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="./enrolled-class.html">Enrolled classes</a></li>
+                <li><a href="./student.html">courses List</a></li>
+                <li><a href="./disscussion.html">Disscussion form</a></li>
+                <li><a href="./enrollment.html">Enrollment list</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu" ></i>
+        </div>
+    </section>
+
+    <section id="st-enroll">
+        <center><h1 id="courseTitle">ATC</h1></center> 
+        <div class="inforrr-container">
+            
+            <div class="imgg">
+                <img src="../assets/c1.jpG" alt="IMAGE">
+            </div>
+
+            <div class="inforrr">
+                <p id="courseDesc">Desc: Finite Automata and Compiler Designs</p>
+                <p id="courseCode">Code: 21CS51</p>
+            </div>
+        </div><br><br>
+
+
+        <div id="fileList">
+            <!-- File links will be dynamically added here -->
+        </div>
+        
+    </section>
+    <br><br>
+
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>    
+    <script src="../public/navigation.js"></script>
+
+    <script>
+        // Function to get parameters from URL
+        function getUrlParameter(name) {
+            name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Populate the elements with parameters from the URL
+        document.getElementById("courseTitle").innerText = getUrlParameter('title');
+        document.getElementById("courseDesc").innerText = "Desc: " + getUrlParameter('desc');
+        document.getElementById("courseCode").innerText = "Code: " + getUrlParameter('code');
+
+        // Function to dynamically add file links
+        
+    // Function to dynamically add file links
+    window.onload = function() {
+        var fileListDiv = document.getElementById("fileList");
+
+        // Fetch the list of files from the server
+        fetch('http://localhost:8000/files')
+            .then(response => response.json())
+            .then(files => {
+                files.forEach(file => {
+                    var linkElement = document.createElement('a');
+                    linkElement.href = 'http://localhost:8000/uploads/' + file; // Update path to use server endpoint
+                    linkElement.textContent = file;
+                    linkElement.style.textDecoration = 'none';
+                    linkElement.style.color = '#4F4440';
+                    linkElement.className = 'enroll';
+                    fileListDiv.appendChild(linkElement);
+                    fileListDiv.appendChild(document.createElement("br")); // Add a line break after each link
+                });
+            })
+            .catch(error => console.error('Error fetching files:', error));
+    };
+
+
+    </script>
+</body>
+</html>

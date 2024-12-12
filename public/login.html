@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="containn">
+        <div class="login-container">
+            <div class="loginn">
+                <center><img src="../assets/logo.png" alt="" class="logo"><br></center>
+                <label for="">USERNAME:</label><br>
+                <input type="text" id="username" required><br><br>
+                <label for="">PASSWORD:</label><br>
+                <input type="password" id="password" required><br><br>
+                <label for="">SELECT ROLE:</label><br>
+                <select name="role" id="role" class="role-select" required>
+                    <option value="">Select Role</option>
+                    <option value="steacher">TEACHER</option>
+                    <option value="sstudent">STUDENT</option>
+                </select>
+                <center><button id="loginButton" class="login-button">LOGIN</button></center>
+                <center><p>Don't have an account? <a href="./signup.html"> SIGN-UP </a></p></center>
+            </div>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>

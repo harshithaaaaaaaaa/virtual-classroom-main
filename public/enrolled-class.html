@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrolled Classes</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <section id="header">
+        <a class="start-logo" href="../index.html"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a class="active" href="./enrolled-class.html">Enrolled classes</a></li>
+                <li><a href="./student.html">Courses List</a></li>
+                <li><a href="./disscussion.html">Disscussion form</a></li>
+                <li><a href="./enrollment.html">Enrollment list</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu"></i>
+        </div>
+
+    </section>
+
+    <section id="individual">
+        <h1>Enrolled Classes:</h1>
+
+        <div id="enrolled-classes" style="display: flex; flex-direction: row;" >
+            <!-- Enrolled classes will be dynamically added here -->
+        </div>
+
+        <center><button class="enroll" onclick="clearEnrolledClasses()" style="margin-bottom: 50px;">CLEAR ENROLLED CLASSES</button></center>
+
+    </section>
+
+    <script>
+        // Retrieve enrolled classes from localStorage
+        const enrolledClasses = JSON.parse(localStorage.getItem("enrolledClasses")) || [];
+
+        // Function to create a new div for each enrolled class
+        function createEnrolledClassDiv(title, desc, code) {
+            const div = document.createElement("div");
+            div.className = "img-box";
+            div.style.height = "400px";
+            div.innerHTML = `
+                <img src="../assets/c1.jpg" alt="">
+                <p>TITLE: ${title}</p>
+                <p>DESC: ${desc}</p>
+                <p>Code: ${code}</p>
+                <a href="./st-enroll.html?title=${title}&desc=${desc}&code=${code}"><button class="open-btn">OPEN</button></a>
+            `;
+            document.getElementById("enrolled-classes").appendChild(div);
+        }
+
+        // Loop through enrolled classes and create divs
+        enrolledClasses.forEach(({ title, desc, code }) => {
+            createEnrolledClassDiv(title, desc, code);
+        });
+
+        function clearEnrolledClasses() {
+            localStorage.removeItem("enrolledClasses");
+            alert("Enrolled classes cleared ❌");
+            window.location.href='enrolled-class.html';
+        }
+    </script>
+    
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="../public/navigation.js"></script>
+</body>
+</html>

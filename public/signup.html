@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="signupApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGN-UP</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ia" ng-controller="SignupController">
+        <form id="ia2" method="post" class="todo" ng-submit="submitForm()" novalidate>
+            <p>SIGN-UP</p><br>
+            <div class="row">
+                <label for="user">USERNAME:</label><br>
+                <input type="text" name="susername" id="susername" ng-model="formData.susername" required> <br><br>
+
+                <label for="user">PASSWORD:</label><br>
+                <input type="password" name="spassword" id="spassword" ng-model="formData.spassword" required> <br><br>
+
+                <label for="user">CONFIRM PASSWORD:</label><br>
+                <input type="password" name="con_password" id="con_password" ng-model="formData.con_password" required>
+                <span id="password-error" class="error-message" ng-show="formData.spassword !== formData.con_password && formData.con_password !== ''">Passwords do not match</span><br><br>
+
+                <label for="user">ROLE:</label><br>
+                <select name="srole" id="srole" class="role-select" ng-model="formData.srole" required>
+                    <option value="">Select Role</option>
+                    <option value="steacher">TEACHER</option>
+                    <option value="sstudent">STUDENT</option>
+                </select>
+            </div><br>
+            <input type="submit" value="submit" id="submit" ng-disabled="signupForm.$invalid">
+        </form>
+    </div>
+
+    <script src="./signup2.js"></script>
+    <script>
+        angular.module('signupApp', [])
+.controller('SignupController', ['$scope', function($scope) {
+    $scope.formData = {};
+
+    $scope.submitForm = function() {
+        // Submit form logic here
+        console.log('Form submitted');
+        console.log('Form data:', $scope.formData);
+        // Your submission logic can go here
+    };
+}]);
+
+    </script>
+</body>
+</html>

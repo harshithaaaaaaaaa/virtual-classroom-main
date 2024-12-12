@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREATE CLASS</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 50px;
+    }
+    th, td {
+        border: 1px solid #4F4440;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #ACA29A;
+    }
+    .ia{
+            height: auto;
+            flex-direction: column;
+        }
+
+    .ia h1{
+        margin-top: 50px;
+        color: #4F4440;
+    }
+</style>
+<body>
+
+    <!-- Add your content for creating a class here -->
+
+    <section id="header">
+        <a class="start-logo" href="../index.html"><img src="../assets/logo.png" alt="Logo" class="logo"></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="./teacher.html">Create class</li></a>
+                <li><a href="./disscussionT.html">Disscussion form</li></a>
+                <li><a href="./enrollment.html">Student List</li></a>
+                <li><a href="./material.html">Upload material</a></li>
+                <a href="#" id="close"><i class="fa-solid fa-arrow-left"></i></a>
+            </ul>
+        </div>
+
+        <div id="mobile">
+            <i id="bar" class="fa-solid fa-bars hammu" ></i>
+        </div>
+
+    </section>
+
+    <div class="ia">
+    
+        <form id="ia1" method="post" class="todo">
+
+            <p>ENTER YOUR MESSAGE</p><br>
+
+            <div class="row">
+                <label for="cid">Select Course:</label><br>
+                <select id="cid" name="cid" class="role-select">
+                    <option value="">Select Course-ID</option>
+                    <!-- Options will be dynamically added here -->
+                </select><br><br>
+                <label for="user">MESSAGE:</label><br>
+                <input type="text" name="message" id="message" required class="desc-box"> <br><br>
+                <label for="user_id">Enter user_id:</label><br>
+                <input type="text" name="user_id" id="user_id" required> <br><br>
+            </div>
+            
+            <input type="submit" value="submit" id="submit">
+        </form>
+    </div>   
+
+    <div style="width: 90%; margin-left: 5%; margin-top: 70px;">
+        <h2 style="letter-spacing: 3px; font-size: 30px; color: #4F4440;">MESSAGES</h2><br>
+    <table style="width: 90%; margin-left: 5%; color: #4F4440;">
+        <thead>
+            <tr>
+                <th>DISCUSSION-ID</th>
+                <th>COURSE-ID</th>
+                <th>USER_ID</th>
+                <th>MESSAGE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentData">
+        <!-- Student data will be dynamically inserted here -->
+        </tbody>
+    </table>
+    </div>
+    
+    <script>
+       // discussion.js
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("ia1").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        var message = document.getElementById("message").value;
+        var cid = document.getElementById("cid").value;
+        var user_id = document.getElementById("user_id").value;
+
+        try {
+           
+            const formData = {
+                cid: cid,
+                message: message,
+                user_id: user_id // Add the user's ID to the form data
+            };
+
+            const response = await fetch('http://localhost:3103/submit_form', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (response.ok) {
+                console.log('Form submitted successfully');
+                alert('Message sent successfully');
+                window.location.href = "./disscussionT.html";
+            } else {
+                console.error('Error submitting form');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Error submitting form: ' + error.message);
+        }
+    });
+});
+
+async function fetchStudentData() {
+    try {
+        const response = await fetch('http://localhost:3103/student_data');
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        displayStudentData(data);
+    } catch (error) {
+        console.error('Error fetching student data:', error);
+    }
+}
+
+function displayStudentData(data) {
+    const studentDataElement = document.getElementById('studentData');
+    studentDataElement.innerHTML = '';
+    data.forEach(student => {
+        const row = document.createElement('tr');
+        Object.values(student).forEach(value => {
+            const cell = document.createElement('td');
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        // Create and append a delete button to the row
+        const deleteButtonCell = document.createElement('td');
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function() {
+            console.log('Discussion ID to delete:', student.DID); // Debug statement
+            deleteStudent(student.DID); // Call a function to delete student
+        });
+        deleteButtonCell.appendChild(deleteButton);
+        row.appendChild(deleteButtonCell);
+
+        studentDataElement.appendChild(row);
+    });
+}
+
+fetchStudentData();
+
+
+
+async function deleteStudent(discussionId) {
+    try {
+        // Confirming if the user wants to delete the conversation
+        const confirmation = confirm("Delete the selected conversation?");
+        if (!confirmation) {
+            return; // If user cancels, do nothing
+        }
+
+        const response = await fetch(`http://localhost:3103/delete_student/${discussionId}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            console.log('Student deleted successfully');
+            fetchStudentData(); // Refresh the student data after deletion
+        } else {
+            console.error('Error deleting student');
+            alert('Error deleting student');
+        }
+    } catch (error) {
+        console.error('Error deleting student:', error);
+        alert('Error deleting student: ' + error.message);
+    }
+}
+
+
+
+fetch('http://localhost:3103/courses')
+    .then(response => response.json())
+    .then(data => {
+        const cidSelect = document.getElementById('cid');
+        data.forEach(course => {
+            const option = document.createElement('option');
+            option.value = course.CID;
+            option.textContent = course.CID;
+            cidSelect.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching courses:', error);
+    });
+
+    </script>
+    
+   
+    <script src="https://kit.fontawesome.com/30581fc693.js" crossorigin="anonymous"></script>
+    <script src="./navigation.js"></script>
+   
+</body>
+</html>
